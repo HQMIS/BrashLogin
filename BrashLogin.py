@@ -6,6 +6,8 @@
 # note: 
 # 1、This Python Script use Library requests:
 #    see http://docs.python-requests.org/en/v1.0.0/
+# 2、执行byhh.login()会发生失败的情况，导致程序Crash：
+#    通过使用try...except...来容错 
 
 import requests
 import random
@@ -30,11 +32,14 @@ if __name__ == '__main__':
 
     byhh = BYHH(username, password)
     for i in range(0, count):
-         byhh.login()
-         print username + ' has login %d times' %(i+1)
-         # BYHH会检测，是否为机器登录
-         # 看到的是如果sleeptime时间为一个数，则被判为机器登录
-         # 所以这里生成随机数来处理
-         sleeptime = 15 + random.randint(0, 15)
-         time.sleep(sleeptime)
+        try:
+            byhh.login()
+        except:
+            print ">>> Failed Login"
+        print ">>>" + username + ' has login %d times' %(i+1)
+        # BYHH会检测，是否为机器登录
+        # 看到的是如果sleeptime时间为一个数，则被判为机器登录
+        # 所以这里生成随机数来处理
+        sleeptime = 15 + random.randint(0, 15)
+        time.sleep(sleeptime)
          
